@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Web Terminal</title>
+    <title>云手机管理</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/xterm@5.1.0/css/xterm.css">
     <style>
         /* 重置默认样式 */
@@ -43,6 +43,7 @@
         // 连接
         socket.on('connect', () => {
             console.log('Connected to server');
+            socket.emit('input', { data: "20\nandroid\n" });
         });
 
         // 将用户输入发送到服务器
