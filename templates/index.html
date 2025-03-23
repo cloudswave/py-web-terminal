@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Web Terminal</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/xterm@5.1.0/css/xterm.css">
+    <style>
+        /* 重置默认样式 */
+        html, body {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            overflow: hidden; /* 隐藏滚动条 */
+        }
+
+        /* 终端容器全屏 */
+        #terminal {
+            height: 100vh; /* 100% 视口高度 */
+            width: 100vw;  /* 100% 视口宽度 */
+            padding: 0;
+            margin: 0;
+        }
+    </style>
+</head>
+<body>
+    <div id="terminal"></div>
+
+    <script src="https://cdn.jsdelivr.net/npm/xterm@5.1.0/lib/xterm.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.5.4/socket.io.js"></script>
+    <script>
+        const socket = io();
+
+        // 初始化 xterm.js
+        const terminal = new Terminal();
+        terminal.open(document.getElementById('terminal'));
+
+        // 接收 Shell 输出并显示在终端中
+        socket.on('output', (data) => {
+            terminal.write(data.data);
+        });
+
+        // 连接
+        socket.on('connect', () => {
+            console.log('Connected to server');
+        });
+
+        // 将用户输入发送到服务器
+        terminal.onData((data) => {
+            socket.emit('input', { data: data });
+        });
+
+        // 处理粘贴事件
+        terminal.onBinary((data) => {
+            const text = new TextDecoder().decode(data);
+            terminal.write(text);
+            socket.emit('input', { data: text });
+        });
+
+        // 聚焦终端
+        terminal.focus();
+
+        // 调整终端大小以适应窗口
+        function fitTerminal() {
+            const rows = Math.floor(window.innerHeight / 18); // 根据字体大小计算行数
+            const cols = Math.floor(window.innerWidth / 9);  // 根据字体大小计算列数
+            terminal.resize(cols, rows);
+        }
+
+        // 初始化时调整大小
+        fitTerminal();
+
+        // 窗口大小变化时调整终端大小
+        window.addEventListener('resize', fitTerminal);
+    </script>
+</body>
+</html>
