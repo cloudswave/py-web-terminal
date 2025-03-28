@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>云手机管理</title>
+    <title>云手机管理by搞机玩家</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/xterm@5.1.0/css/xterm.css">
     <style>
         /* 重置默认样式 */
@@ -24,6 +24,7 @@
     </style>
 </head>
 <body>
+    <div id="navi"><a id="list" href="/" target="_blank">云手机列表</a></div>
     <div id="terminal"></div>
 
     <script src="https://cdn.jsdelivr.net/npm/xterm@5.1.0/lib/xterm.min.js"></script>
@@ -73,6 +74,10 @@
 
         // 窗口大小变化时调整终端大小
         window.addEventListener('resize', fitTerminal);
+
+        // 获取浏览器地址中的主机qu
+        const host = window.location.hostname;
+        document.getElementById('list').href = `http://${host}:8000`;
     </script>
 </body>
 </html>
