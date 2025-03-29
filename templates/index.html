@@ -64,7 +64,7 @@
 
         // 调整终端大小以适应窗口
         function fitTerminal() {
-            const rows = Math.floor(window.innerHeight / 18); // 根据字体大小计算行数
+            const rows = Math.floor((window.innerHeight-50) / 18); // 根据字体大小计算行数
             const cols = Math.floor(window.innerWidth / 9);  // 根据字体大小计算列数
             terminal.resize(cols, rows);
         }
